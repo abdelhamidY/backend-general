@@ -2,7 +2,6 @@ import Jwt from "jsonwebtoken";
 import UserModel from "../DB/models/user.model.js";
 export const checkAuth = () => {
   return async (req, res, next) => {
-    console.log("req.headers", req.headers);
     try {
       const { authorization } = req.headers;
       if (!authorization?.startsWith(process.env.BearerKey)) {
@@ -10,8 +9,6 @@ export const checkAuth = () => {
       } else {
         const token = authorization.split(process.env.BearerKey)[1].trim();
         const decoded = Jwt.verify(token, process.env.TOKEN_SIGNUTURE);
-
-        console.log("decoded", decoded);
 
         if (!decoded?.id) {
           res.json({ message: "In-valid payload" });
